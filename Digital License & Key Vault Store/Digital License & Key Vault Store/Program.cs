@@ -19,6 +19,9 @@ builder.Services.AddSession(options =>
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+var cs = builder.Configuration.GetConnectionString("KeyVaultDBContext");
+builder.Services.AddDbContext<KeyVaultDbContext>(opt=>opt.UseSqlServer(cs));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -41,6 +44,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Products}/{action=Index}/{id?}");
 
 app.Run();
