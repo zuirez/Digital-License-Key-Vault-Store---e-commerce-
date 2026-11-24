@@ -1,0 +1,29 @@
+﻿@model Digital_License___Key_Vault_Store.Models.ProductsModel
+
+<div class="col-md-6 col-lg-4">
+    <div class="card vault-card h-100 p-3 rounded-3">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="badge bg-secondary bg-opacity-25 text-info">@Model.CategoryName</span>
+            @if (Model.AvailableKeys > 0)
+            {
+                <span class="badge bg-success bg-opacity-25 text-success">
+                    <i class="bi bi-key-fill me-1"></i>@Model.AvailableKeys in vault
+                </span>
+            }
+            else
+            {
+                <span class="badge bg-danger bg-opacity-25 text-danger">Out of Stock</span>
+            }
+        </div>
+
+        <h5 class="card-title text-white fw-semibold mt-1">@Model.Name</h5>
+        <p class="card-text text-secondary small flex-grow-1">@Model.Description</p>
+
+        <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top border-secondary border-opacity-25">
+            <span class="fs-5 fw-bold text-white">৳@Model.Price.ToString("N0")</span>
+            <a asp-controller="Store" asp-action="Details" asp-route-slug="@Model.Slug" class="btn btn-primary btn-sm px-3">
+                View Key <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+    </div>
+</div>
