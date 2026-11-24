@@ -1,3 +1,64 @@
-﻿@using Digital_License___Key_Vault_Store.Controllers
-@model List<Digital_License___Key_Vault_Store.Data.Entities.Product>
+﻿@model List<Digital_License___Key_Vault_Store.Models.ProductsModel>
+@using Digital_License___Key_Vault_Store.Models
+@{
+    ViewData["Title"] = "Digital License Store";
+    var categories = ViewBag.Categories as List<Category> ?? new List<Category>();
+    string? activeCategory = ViewBag.ActiveCategory;
+    string? searchTerm = ViewBag.SearchTerm;
+}
 
+<div class="p-4 p-md-5 mb-4 rounded-3 vault-card">
+    <div class="row align-items-center g-3">
+        <div class="col-lg-8">
+            <div class="d-flex gap-2 flex-wrap">
+                <a asp-action="Index"
+                   class="btn btn-sm @(string.IsNullOrEmpty(activeCategory) ? "btn-primary" : "btn-outline-secondary")">
+                    All
+                </a>
+                @foreach (var cat in categories)
+                {
+                    <a asp-action="Index" asp-route-category="@cat.Slug"
+                       class="btn btn-sm @(activeCategory == cat.Slug ? "btn-primary" : "btn-outline-secondary")">
+                        @cat.Name
+                    </a>
+                }
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <form method="get" asp-action="Index" class="d-flex gap-2">
+                @if (!string.IsNullOrEmpty(activeCategory))
+                {
+                    <input type="hidden" name="category" value="@activeCategory" />
+                }
+                <input id="searchInput" type="search" name="search" value="@searchTerm"
+                       class="form-control bg-dark border-secondary" placeholder="Search licenses..." />
+
+                @if (!string.IsNullOrWhiteSpace(searchTerm))
+                {
+                    <a asp-action="Index" asp-route-category="@activeCategory"
+                       class="btn btn-outline-secondary" title="Clear search">
+                        <i class="bi bi-x-lg"></i>
+                    </a>
+                }
+                <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i></button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="text-center py-5 text-secondary">
+        <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+        No products found matching your filter.
+    </div>
+}
+else
+{
+    <div class="row g-4">
+        @foreach (var product in Model)
+        {
+            <partial name="_ProductCard" model="product" />
+        }
+    </div>
+}
